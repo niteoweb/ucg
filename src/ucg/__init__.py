@@ -158,7 +158,10 @@ class UCG(object):
             'generateuniquecontent.com/js/ucg.js.*"></script>',
             text
         )
-        return text[:r.start()] + text[r.end():]
+        if r:
+            return text[:r.start()] + text[r.end():]
+        else:
+            return text
 
     def unique_variation(self, text, params=None):
         """ Return a unique variation of the given text.
