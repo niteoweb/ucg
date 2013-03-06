@@ -60,8 +60,6 @@ class UCG(object):
                 urllib.quote_plus(phpserialize.dumps(args[i]))
             )
 
-        print data
-
         try:
             response = urllib2.urlopen(
                 self.URL,
@@ -156,8 +154,9 @@ class UCG(object):
         :rtype: string
         """
         r = re.search(
-                '<script type="text/javascript" src="http://www.generateuniquecontent.com/js/ucg.js.*"></script>',
-                text
+            '<script type="text/javascript" src="http://www.'
+            'generateuniquecontent.com/js/ucg.js.*"></script>',
+            text
         )
         return text[:r.start()] + text[r.end():]
 
@@ -187,4 +186,4 @@ class UCG(object):
                     sleep(2)  # wait 2s and then try again
                     continue
 
-            return self._strip_script(result)
+            return self._strip_script(result).decode("utf-8")
