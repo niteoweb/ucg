@@ -8,7 +8,7 @@ docs/Makefile
 docs/make.bat
 eggs/
 parts/
-src/wordai.egg-info/
+src/ucg.egg-info/
 src/vvv/
 include/
 lib/

@@ -2,7 +2,7 @@
 
 
 class UCGError(Exception):
-    """Base class for exceptions in WordAi module."""
+    """Base class for exceptions in UCG module."""
     def __init__(self, api_error_msg):
         self.api_error_msg = api_error_msg
 
