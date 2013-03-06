@@ -1,13 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import phpserialize
+import re
+import socket
 import urllib
 import urllib2
-import socket
-import phpserialize
 
-from ucg import exceptions as ex
 from time import sleep
+from ucg import exceptions as ex
 
 
 class UCG(object):
@@ -142,9 +143,25 @@ class UCG(object):
         return result
 
     def text_with_spintax(self):
-        raise NotImplemented()
+        """Spinner does not support this method.
+        """
+        raise ex.NotImplementedError("Spinner does not support this method.")
 
-    def unique_variation(self, text, params=None, wait=True):
+    def _strip_script(self, text):
+        """Strip script at the end of each spun article.
+
+        :param text: string with script
+        :type text: string
+        :return: stripped text
+        :rtype: string
+        """
+        r = re.search(
+                '<script type="text/javascript" src="http://www.generateuniquecontent.com/js/ucg.js.*"></script>',
+                text
+        )
+        return text[:r.start()] + text[r.end():]
+
+    def unique_variation(self, text, params=None):
         """ Return a unique variation of the given text.
 
         :param text: original text that needs to be changed
@@ -155,16 +172,19 @@ class UCG(object):
         :return: processed text
         :rtype: string
         """
+        # send article to server and get its qid
         qid = self._add_queue(text, params)
 
-        while True:
+        # try 'trytimes' times to get article
+        trytimes = 8
+        for i in range(trytimes):
             try:
                 result = self._get_queue(qid)
             except ex.NotReadyError as e:
-                print str(e)
-                if wait:
-                    sleep(5)
-                    continue
-                else:
+                if i == trytimes - 1:  # on last iteration raise NotReadyError
                     raise e
-            return result
+                else:
+                    sleep(2)  # wait 2s and then try again
+                    continue
+
+            return self._strip_script(result)
