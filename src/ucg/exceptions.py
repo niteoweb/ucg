@@ -52,3 +52,7 @@ class ProcessError(UCGError):
 
 class NotReadyError(UCGError):
     """Server did not process text yet."""
+
+
+class NotImplementedError(UCGError):
+    """Server did not process text yet."""
