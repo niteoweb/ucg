@@ -35,6 +35,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
+        'phpserialize',
     ],
     extras_require={
         # list libs needed for unittesting this project
