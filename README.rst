@@ -54,3 +54,4 @@ Usage
     >>> print u.unique_variation(u"Some test text whič is fü.")
     u"Some trial cookie whič is fü."
     >>> u.logout()
+
