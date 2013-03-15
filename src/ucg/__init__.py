@@ -99,12 +99,14 @@ class UCG(object):
             raise ex.AuthenticationError("user not logged in")
         return result
 
-    def _add_queue(self, text, params=None, super=1, replace_caps=False):
+    def _add_queue(self, text, params, super, replace_caps):
+        if not params:
+            params = self.DEFAULT_PARAMS
         result = self._send_request([
             "addQueue",
             self._session_key,
             text,
-            self.DEFAULT_PARAMS,
+            params,
             super,
             1 if replace_caps else 0
         ])
@@ -163,7 +165,7 @@ class UCG(object):
         else:
             return text
 
-    def unique_variation(self, text, params=None):
+    def unique_variation(self, text, params=None, super=1, replace_caps=False):
         """ Return a unique variation of the given text.
 
         :param text: original text that needs to be changed
@@ -175,7 +177,7 @@ class UCG(object):
         :rtype: string
         """
         # send article to server and get its qid
-        qid = self._add_queue(text, params)
+        qid = self._add_queue(text, params, super, replace_caps)
 
         # try 'trytimes' times to get article
         trytimes = 8
