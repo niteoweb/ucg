@@ -180,7 +180,7 @@ class UCG(object):
         qid = self._add_queue(text, params, super, replace_caps)
 
         # try 'trytimes' times to get article
-        trytimes = 8
+        trytimes = 10
         for i in range(trytimes):
             try:
                 result = self._get_queue(qid)
@@ -188,7 +188,7 @@ class UCG(object):
                 if i == trytimes - 1:  # on last iteration raise NotReadyError
                     raise e
                 else:
-                    sleep(2)  # wait 2s and then try again
+                    sleep(8)  # wait 8s and then try again
                     continue
 
             return self._strip_script(result).decode("utf-8")
