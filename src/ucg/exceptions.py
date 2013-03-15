@@ -55,4 +55,4 @@ class NotReadyError(UCGError):
 
 
 class NotImplementedError(UCGError):
-    """Server did not process text yet."""
+    """Function is not implemented."""
