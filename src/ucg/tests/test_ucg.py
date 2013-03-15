@@ -92,10 +92,51 @@ class TestApi(unittest.TestCase):
             u"Some test text whič is fü."
         )
 
-    @mock.patch('ucg.urllib2')
-    def test_text_with_spintax(self, mocked_urllib2):
+    def test_text_with_spintax(self):
         """Test call of text_with_spintax(), it is not yet implemented."""
         self.assertRaises(
             ex.NotImplementedError,
             self.ucg.text_with_spintax
+        )
+
+    def test_parameters(self):
+        """Test passing of parameters."""
+        # set Mock to sub-method
+        self.ucg._send_request = mock.Mock(return_value="some-qid")
+
+        # call method higher in stack
+        self.ucg._add_queue(
+            'text to spin',
+            params=UCG.DEFAULT_PARAMS,
+            super=2,
+            replace_caps=True
+        )
+
+        # get returned values
+        returned = self.ucg._send_request.call_args[0][0]
+
+        # test returned values
+        self.assertEquals(
+            returned[0],
+            'addQueue'
+        )
+        self.assertEquals(
+            returned[1],
+            '1234-567890-1234'
+        )
+        self.assertEquals(
+            returned[2],
+            'text to spin'
+        )
+        self.assertEquals(
+            returned[3],
+            UCG.DEFAULT_PARAMS
+        )
+        self.assertEquals(
+            returned[4],
+            2
+        )
+        self.assertEquals(
+            returned[5],
+            1
         )
