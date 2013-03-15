@@ -17,7 +17,7 @@ long_description = \
 
 setup(
     name='ucg',
-    version="0.1.1",
+    version="0.1.2",
     description="Python bindings for UCG API",
     long_description=long_description,
     classifiers=[
